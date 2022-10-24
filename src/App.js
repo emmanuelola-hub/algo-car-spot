@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import './App.css';
 import Header from './components/Header'
 import Tabs from './components/Tabs'
+import Cover from "./components/Cover";
+import coverImg from "./assets/img/cover.avif"
 import { indexerClient, myAlgoConnect } from "./utils/constants";
 import { buyCarAction, createcarAction, dislikeCarAction, getCarsAction, likeCarAction } from "./utils/spotter";
 
@@ -86,14 +88,10 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    connectWallet()
-  }, [])
-  
 
   return (
 <>
-      <div className="container py-3">
+      {address ? <div className="container py-3">
         <Header balance={balance} />
         <Tabs
           addCar={addCar}
@@ -103,7 +101,7 @@ function App() {
           dislikeCar={dislikeCar}
           address={address}
         />
-      </div>
+      </div>: <Cover name={"Car Spot"} coverImg={coverImg} connect={connectWallet} />}
     </>
   );
 }
