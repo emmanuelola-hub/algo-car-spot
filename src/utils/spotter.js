@@ -302,8 +302,6 @@ export const getCarsAction = async () => {
            
         }
     }
-    console.log(cars);
-    console.log("cars fetched.")
     return cars
 }
 
