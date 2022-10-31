@@ -1,3 +1,5 @@
+import { microAlgosToString } from "../utils/conversions";
+
 const Header = ({balance}) => {
   return (
     <header>
@@ -10,7 +12,7 @@ const Header = ({balance}) => {
         </a>
         <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto">
           <a className="py-2 text-dark text-decoration-none" href="#">
-           Balance: {balance / 1000000} ALGO 
+           Balance: {microAlgosToString(balance)} ALGO 
           </a>
         </nav>
       </div>

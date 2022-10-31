@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import './App.css';
 import Header from './components/Header'
 import Tabs from './components/Tabs'
@@ -55,7 +55,7 @@ function App() {
       if(cars)setCars(cars)
     } catch (error) {
       console.log(error);
-    }
+    } 
   };
 
   const likeCar = async (car) => {
