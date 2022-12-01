@@ -69,7 +69,7 @@ class CarSpot:
     def sell(self):
         return Seq([
             Assert(
-                # check group size, args and make sure that car has been bought
+                # check group size, args and make sure that car has been bought.
                 And(
                     Global.group_size() == Int(1),
                     Txn.application_args.length() == Int(2),
