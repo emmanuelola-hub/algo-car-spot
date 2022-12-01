@@ -55,10 +55,9 @@ export const createcarAction = async (senderAddress, car) => {
     let image = new TextEncoder().encode(car.image);
     let description = new TextEncoder().encode(car.description);
     let amount = algosdk.encodeUint64(parseInt(car.amount));
-    let owner = new TextEncoder().encode(senderAddress);
 
 
-    let appArgs = [name, description, image, amount, owner]
+    let appArgs = [name, description, image, amount]
 
     // Create ApplicationCreateTxn
     let txn = algosdk.makeApplicationCreateTxnFromObject({
@@ -95,6 +94,35 @@ export const createcarAction = async (senderAddress, car) => {
     console.log("Created new app-id: ", appId);
     return appId;
 }
+
+export const optIn = async (senderAddress, appId) => {
+    let accountInfo = await indexerClient.lookupAccountByID(senderAddress).do();
+    let optInApps  = accountInfo.account["apps-local-state"];
+    if(optInApps.find(app => app.id === appId) !== undefined){
+        return;
+    }
+
+    let params = await algodClient.getTransactionParams().do();
+
+
+    // create unsigned transaction
+    let txn = algosdk.makeApplicationOptInTxn(senderAddress, params, appId);
+
+    // Get transaction ID
+    let txId = txn.txID().toString();
+
+    // Sign & submit the transaction
+    let signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
+    console.log("Signed transaction with txID: %s", txId);
+    await algodClient.sendRawTransaction(signedTxn.blob).do();
+
+    // Wait for transaction to be confirmed
+    let confirmedTxn = await algosdk.waitForConfirmation(algodClient, txId, 4);
+
+    // Get the completed Transaction
+    console.log("Transaction " + txId + " confirmed in round " + confirmedTxn["confirmed-round"]);
+}
+
 
 // Buy car: Group transaction consisting of ApplicationCallTxn and PaymentTxn
 export const buyCarAction = async (senderAddress, car) => {
