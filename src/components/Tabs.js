@@ -14,7 +14,7 @@ const Tabs = ({ addCar, cars, likeCar, dislikeCar, address, buyCar }) => {
                 <div className="card-body">
                   <img src={car.image} width={180} alt="" />
                   <h1 className="card-title pricing-card-title">
-                    ${car.amount}
+                    {car.amount / 1000000}
                     <small className="text-muted fw-light">/ALGO</small>
                   </h1>
                   <ul className="list-unstyled mt-3 mb-4">

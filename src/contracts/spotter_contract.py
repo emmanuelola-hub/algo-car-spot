@@ -23,6 +23,7 @@ class CarSpot:
             Assert(Txn.application_args.length() == Int(5)),
             Assert(Txn.note() == Bytes("car-spot:uv1")),
             Assert(Btoi(Txn.application_args[3]) > Int(0)),
+            # set variables name description image and amount
             App.globalPut(self.Variables.name, Txn.application_args[0]),
             App.globalPut(self.Variables.description, Txn.application_args[1]),
             App.globalPut(self.Variables.image, Txn.application_args[2]),
@@ -38,8 +39,10 @@ class CarSpot:
             Approve()
         ])
 
+    # buy function
     def buy(self):
         return Seq([
+            #check group size is equal to two, args is 2 and check if car has already been bought
             Assert(
                 And(
                     Global.group_size() == Int(2),
@@ -62,13 +65,17 @@ class CarSpot:
             Approve()
         ])
 
+    # sell function
     def sell(self):
         return Seq([
             Assert(
+                # check group size, args and make sure that car has been bought
                 And(
                     Global.group_size() == Int(1),
                     Txn.application_args.length() == Int(2),
-                    App.globalGet(self.Variables.isBought) == Int(1)
+                    App.globalGet(self.Variables.isBought) == Int(1),
+                    #check if is owner
+                    App.globalGet(self.Variables.owner) == Txn.sender(),
                 ),
             ),
             App.globalPut(self.Variables.isBought, Int(0)),
@@ -77,10 +84,13 @@ class CarSpot:
 
     def like(self):
         return Seq([
+            #check the group size and arg length
             Assert(
                 And(
                     Global.group_size() == Int(1),
                     Txn.application_args.length() == Int(1),
+                    # owners cant like or dislike
+                    App.globalGet(self.Variables.owner) != Txn.sender(),
                 ),
             ),
 
@@ -94,6 +104,8 @@ class CarSpot:
                 And(
                     Global.group_size() == Int(1),
                     Txn.application_args.length() == Int(1),
+                    # owners cant like or dislike
+                    App.globalGet(self.Variables.owner) != Txn.sender(),
                 ),
             ),
 
