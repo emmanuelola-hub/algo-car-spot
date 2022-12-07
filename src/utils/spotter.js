@@ -146,7 +146,7 @@ export const buyCarAction = async (senderAddress, car) => {
 
 
 export const sellCarAction = async (senderAddress, car) => {
-    console.log("Selling Car...");
+    console.log("Selling Car...", senderAddress);
 
     let params = await algodClient.getTransactionParams().do();
     params.fee = algosdk.ALGORAND_MIN_TX_FEE;
@@ -154,7 +154,9 @@ export const sellCarAction = async (senderAddress, car) => {
 
     // Build required app args as Uint8Array
     let sellArg = new TextEncoder().encode("sell")
-    let appArgs = [sellArg]
+    let address = new TextEncoder().encode(senderAddress);
+
+    let appArgs = [sellArg, address]
 
     // Create ApplicationCallTxn
     let appCallTxn = algosdk.makeApplicationCallTxnFromObject({
@@ -368,6 +370,7 @@ const getApplication = async (appId) => {
         if (getField("OWNER", globalState) !== undefined) {
             let field = getField("OWNER", globalState).value.bytes;
             owner = getAddress(field);
+            console.log(owner);
         }
 
         return new car(creator, name, image, description, amount, likes, dislikes, isBought, appId, owner)

@@ -1,6 +1,6 @@
 import Form from "./Form";
 
-const Tabs = ({ addCar, cars, likeCar, dislikeCar, address, buyCar }) => {
+const Tabs = ({ addCar, cars, likeCar, dislikeCar, address, buyCar, sellCar }) => {
   return (
     <main>
       <div className="row row-cols-1 row-cols-md-3 mb-3 text-center">
@@ -36,7 +36,7 @@ const Tabs = ({ addCar, cars, likeCar, dislikeCar, address, buyCar }) => {
                       <p>{car.dislikes} Dislikes</p>
                     </div>
                   </div>
-                  {car.owner !== address && (
+                  {car.isBought === 0 ? (
                     <button
                       type="button"
                       onClick={() => buyCar(car)}
@@ -44,7 +44,20 @@ const Tabs = ({ addCar, cars, likeCar, dislikeCar, address, buyCar }) => {
                     >
                       Buy Now
                     </button>
-                  )}
+                  ): car.owner === address ? <button
+                      type="button"
+                      onClick={() => sellCar(car)}
+                      className="w-100 btn btn-lg btn-outline-danger"
+                    >
+                      Sell Now
+                    </button>: 
+                    <button
+                      type="button"
+                      disabled
+                      className="w-100 btn btn-lg btn-primary"
+                    >
+                      These are already owned
+                    </button>}
                 </div>
               </div>
             </div>

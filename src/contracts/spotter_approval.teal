@@ -32,6 +32,11 @@ txn NumAppArgs
 int 1
 ==
 &&
+byte "OWNER"
+app_global_get
+txn Sender
+!=
+&&
 assert
 byte "DISLIKES"
 byte "DISLIKES"
@@ -48,6 +53,11 @@ int 1
 txn NumAppArgs
 int 1
 ==
+&&
+byte "OWNER"
+app_global_get
+txn Sender
+!=
 &&
 assert
 byte "LIKES"
@@ -69,6 +79,11 @@ int 2
 byte "ISBOUGHT"
 app_global_get
 int 1
+==
+&&
+byte "OWNER"
+app_global_get
+txn Sender
 ==
 &&
 assert

@@ -21,7 +21,7 @@ class CarSpot:
     def application_creation(self):
         return Seq([
             Assert(Txn.application_args.length() == Int(5)),
-            Assert(Txn.note() == Bytes("car-spot:uv1")),
+            Assert(Txn.note() == Bytes("car-spot:uv2")),
             Assert(Btoi(Txn.application_args[3]) > Int(0)),
             # set variables name description image and amount
             App.globalPut(self.Variables.name, Txn.application_args[0]),

@@ -5,7 +5,7 @@ import Tabs from './components/Tabs'
 import Cover from "./components/Cover";
 import coverImg from "./assets/img/cover.avif"
 import { indexerClient, myAlgoConnect } from "./utils/constants";
-import { buyCarAction, createcarAction, dislikeCarAction, getCarsAction, likeCarAction } from "./utils/spotter";
+import { buyCarAction, createcarAction, dislikeCarAction, getCarsAction, likeCarAction, sellCarAction } from "./utils/spotter";
 
 
 function App() {
@@ -88,6 +88,17 @@ function App() {
     }
   };
 
+  const sellCar = async (car) => {
+    try {
+      await sellCarAction(address, car)
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getCars();
+      fetchBalance();
+    }
+  };
+
 
   return (
 <>
@@ -97,6 +108,7 @@ function App() {
           addCar={addCar}
           cars={cars}
           buyCar={buyCar}
+          sellCar = {sellCar}
           likeCar={likeCar}
           dislikeCar={dislikeCar}
           address={address}
